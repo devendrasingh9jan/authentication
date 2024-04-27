@@ -1,5 +1,6 @@
 package com.user.authentication.models;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,16 +13,19 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements UserDetails {
-  private Integer id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+  @Column(unique = true)
   private String email;
   private String password;
-  private String firstName;
-  private String lastName;
+  @OneToMany
   private Set<Role> roles = new HashSet<>();
 
   @Override

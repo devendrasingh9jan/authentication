@@ -1,6 +1,6 @@
 package com.user.authentication.config;
 
-import com.user.authentication.client.UserProfileClient;
+import com.user.authentication.Repository.UserRepository;
 import com.user.authentication.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,21 +17,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
-
-    private UserProfileClient userProfileClient;
+    private UserRepository userRepository;
     @Autowired
-    public ApplicationConfig(UserProfileClient userProfileClient) {
-        this.userProfileClient = userProfileClient;
+    public ApplicationConfig(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Bean
     public UserDetailsService userDetailsService(){
-    return email -> Objects.requireNonNull(userProfileClient.findByEmail(email).getBody())
+    return email -> userRepository.findByEmail(email)
             .orElseThrow(() -> new ResourceNotFoundException("User not Found"));
     }
 
