@@ -37,8 +37,6 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     public ResponseEntity<JwtResponse> getResponse(JwtRequest request) {
         doAuthenticate(request.getEmail(), request.getPassword());
@@ -62,7 +60,7 @@ public class UserService {
     @Transient
     private void saveUserCredentials(String userCredentialsJson) {
         ObjectMapper objectMapper = new ObjectMapper();
-        UserCred userCred = null;
+        UserCred userCred;
         try {
             userCred = objectMapper.readValue(userCredentialsJson, UserCred.class);
         } catch (JsonProcessingException e) {
@@ -70,8 +68,6 @@ public class UserService {
         }
         User user = new User();
         user.setEmail(userCred.getEmail());
-        String encodedPassword = passwordEncoder.encode(userCred.getPassword());
-        user.setPassword(encodedPassword);
         Role role = new Role();
         role.setRoleName("ROLE_USER");
         roleRepository.save(role);
