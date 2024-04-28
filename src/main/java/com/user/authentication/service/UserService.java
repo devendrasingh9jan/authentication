@@ -58,7 +58,7 @@ public class UserService {
 
     @KafkaListener(topics = "AUTH_TOPIC", groupId = "AUTH_GROUP")
     @Transient
-    private void saveUserCredentials(String userCredentialsJson) {
+    public void saveUserCredentials(String userCredentialsJson) {
         ObjectMapper objectMapper = new ObjectMapper();
         UserCred userCred;
         try {
