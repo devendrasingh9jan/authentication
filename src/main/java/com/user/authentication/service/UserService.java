@@ -68,6 +68,7 @@ public class UserService {
         }
         User user = new User();
         user.setEmail(userCred.getEmail());
+        user.setPassword(userCred.getPassword());
         Role role = new Role();
         role.setRoleName("ROLE_USER");
         roleRepository.save(role);
